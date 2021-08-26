@@ -8,6 +8,7 @@ public class DishMenuRow {
 
     private WebElement row;
     private By dishInfoButton = By.xpath("//button[@class='productInfo']");
+    private By dishName = By.cssSelector("h5.productName");
 
 
 
@@ -27,6 +28,11 @@ public class DishMenuRow {
     @Step("Is row displayed")
     public boolean isVisible() {
         return row.isDisplayed();
+    }
+
+    @Step("Get (or 'record') name of test dish from main page")
+    public String getDishNameFromMainPageMenu(){
+        return row.findElement(dishName).getText();
     }
 
     @Override

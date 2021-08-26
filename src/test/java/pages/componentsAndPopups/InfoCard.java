@@ -2,6 +2,7 @@ package pages.componentsAndPopups;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import pages.BasePage;
 import pages.MainPage;
@@ -34,4 +35,12 @@ public class InfoCard extends BasePage {
         return driver.findElement(dishTitle).getText();
     }
 
+    @Step("Is info card visible")
+    public boolean isVisible(){
+        try {
+            return driver.findElement(container).isDisplayed();
+        } catch (NoSuchElementException e){
+            return false;
+        }
+    }
 }
