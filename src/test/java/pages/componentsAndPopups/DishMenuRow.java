@@ -1,4 +1,4 @@
-package pages.components;
+package pages.componentsAndPopups;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
@@ -11,7 +11,6 @@ public class DishMenuRow {
 
 
 
-
     public DishMenuRow(WebElement row) {
         this.row = row;
     }
@@ -20,9 +19,9 @@ public class DishMenuRow {
         return this.row;
     }
 
-    public InfoCard clickOnInfoAboutDish(){
+    @Step("Click on info card button")
+    public void clickOnInfoAboutDish(){
         row.findElement(dishInfoButton).click();
-        return new InfoCard();
     }
 
     @Step("Is row displayed")
