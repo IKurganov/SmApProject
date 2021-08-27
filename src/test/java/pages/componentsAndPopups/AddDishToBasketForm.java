@@ -2,6 +2,7 @@ package pages.componentsAndPopups;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import pages.BasePage;
 import pages.MainPage;
@@ -29,7 +30,7 @@ public class AddDishToBasketForm extends BasePage {
 
     @Step("Click add to the basket button in add dish form")
     public MainPage clickAddButton() {
-        driver.findElement(addButton).click();
+        waitForElementVisibility(driver.findElement(addButton)).click();
         return new MainPage(driver);
     }
 
@@ -46,7 +47,11 @@ public class AddDishToBasketForm extends BasePage {
 
     @Step("Is add dish to basket form visible")
     public boolean isVisible(){
-        return driver.findElement(container).isDisplayed();
+        try {
+            return driver.findElement(container).isDisplayed();
+        } catch (NoSuchElementException e){
+            return false;
+        }
     }
 
 }

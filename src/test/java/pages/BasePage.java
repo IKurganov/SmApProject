@@ -14,7 +14,7 @@ public abstract class BasePage {
     }
 
     protected WebElement waitForElementVisibility(WebElement element) {
-        return new WebDriverWait(driver, 15)
+        return new WebDriverWait(driver, 5)
                 .until(ExpectedConditions.visibilityOf(element));
     }
 

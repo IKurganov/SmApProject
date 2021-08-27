@@ -59,9 +59,9 @@ public abstract class TestBase {
             LOG.info("webdriver   -     {}", browser.toString());
         }
 
-        driver.manage().timeouts().pageLoadTimeout(12, TimeUnit.SECONDS);
-        driver.manage().timeouts().implicitlyWait(12, TimeUnit.SECONDS);
-        driver.manage().timeouts().setScriptTimeout(12, TimeUnit.SECONDS);
+        //driver.manage().timeouts().pageLoadTimeout(12, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+        //driver.manage().timeouts().setScriptTimeout(12, TimeUnit.SECONDS);
         driver.manage().window().maximize();
     }
 

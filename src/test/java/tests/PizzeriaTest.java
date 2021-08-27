@@ -15,6 +15,7 @@ import pages.MainPage;
 import pages.componentsAndPopups.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -88,6 +89,8 @@ public class PizzeriaTest extends TestBase {
         AddDishToBasketForm addTestDishToBasketForm =
                 infoAboutTestDish.clickAddButton();
 
+        mainPage.clickPickup();
+
         //TODO отдебажить при свете дня
         addTestDishToBasketForm.clickAddButton();
         assertThat(addTestDishToBasketForm.isVisible())
@@ -96,11 +99,16 @@ public class PizzeriaTest extends TestBase {
 
 // Step 4 from doc
 
-        for (RequiredIngredientRow ingredient : addTestDishToBasketForm.getRequiredIngredientRows()) {
-            LOG.info("Work with ingredient - {}", ingredient.toString());
-            ingredient.switchRow(true);
-            ingredient.chooseFirstOption();
+        List<RequiredIngredientRow> testIngredients = addTestDishToBasketForm.getRequiredIngredientRows();
+        for (int i = 0; i < testIngredients.size(); i++){
+            LOG.info("Work with ingredient - {}", testIngredients.get(i).toString());
+            testIngredients.get(i).switchRow(true);
+            testIngredients.get(i).chooseFirstOption(i);
         }
+
+        /*for (RequiredIngredientRow ingredient : addTestDishToBasketForm.getRequiredIngredientRows()) {
+        }*/
+
         mainPage = addTestDishToBasketForm.clickAddButton();
         assertThat(addTestDishToBasketForm.isVisible())
                 .as("'Adding dish to basket' form was closed after adding dish")
@@ -126,12 +134,15 @@ public class PizzeriaTest extends TestBase {
     @Tag("Smoke")
     @DisplayName("Check that navigation via categories works")
     public void checkNavigationViaCategories() {
+        //TODO отдебажить при свете дня - 2
         LOG.info("Let's begin test of navigation via categories");
 // Step 1 from doc
         MainPage mainPage = new MainPage(driver);
 
-        LOG.info("Take all categories, count them and check that they are inactive");
+        LOG.info("Go to pizzeria's site");
+        mainPage.open(baseUrl);
 
+        LOG.info("Take all categories, count them and check that they are inactive");
         assertThat(mainPage.getCountOfCategoriesOnMainPage()).isEqualTo(18);
 
         for (CategoryRow cat : mainPage.getCategoriesList()) {

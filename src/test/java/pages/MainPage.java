@@ -110,4 +110,10 @@ public class MainPage extends BasePage {
         return new Basket(driver);
     }
 
+    @Step("Choose pickup")
+    public void clickPickup(){
+        driver.findElement(By.xpath("//div[text()='Abholen']")).click();
+        driver.findElement(By.xpath("//button[text()='Bestätigen']")).click();
+    }
+
 }
