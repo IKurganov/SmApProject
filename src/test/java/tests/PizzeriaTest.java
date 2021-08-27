@@ -9,9 +9,12 @@ import org.apache.logging.log4j.Logger;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import pages.MainPage;
 import pages.componentsAndPopups.*;
+
+import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -119,9 +122,43 @@ public class PizzeriaTest extends TestBase {
     @Test
     @Epic("Pizzeria Test")
     @Feature("Navigation via categories")
-    @Severity(SeverityLevel.CRITICAL)
+    @Severity(SeverityLevel.BLOCKER)
+    @Tag("Smoke")
     @DisplayName("Check that navigation via categories works")
     public void checkNavigationViaCategories() {
+        LOG.info("Let's begin test of navigation via categories");
+// Step 1 from doc
+        MainPage mainPage = new MainPage(driver);
 
+        LOG.info("Take all categories, count them and check that they are inactive");
+
+        assertThat(mainPage.getCountOfCategoriesOnMainPage()).isEqualTo(18);
+
+        for (CategoryRow cat : mainPage.getCategoriesList()) {
+            assertThat(cat.isCategoryActive())
+                    .as("Before the user starts selecting category, the tabs are not active")
+                    .isFalse();
+        }
+
+// Step 2 from doc
+        //TODO May be change to parametrized test with @ParameterizedTest, @MethodSource and static Stream<Arguments>
+        ArrayList<String> testCategories = new ArrayList<String>();
+        testCategories.add("Getränke");
+        testCategories.add("Rumpsteaks");
+        testCategories.add("Suppen");
+        for (String catName : testCategories) {
+            mainPage.clickOnCategory(catName);
+            SoftAssertions.assertSoftly(soft -> {
+                soft.assertThat(mainPage.getExactlyCategoryRow(catName).isCategoryActive())
+                        .as("One of test categories will be active after click")
+                        .isTrue();
+                soft.assertThat(mainPage.getExactlyCategoryRow("Fisch").isCategoryActive())
+                        .as("Category tab not from list remains inactive")
+                        .isFalse();
+                soft.assertThat(mainPage.getCategoryNameFromMainPageMenu())
+                        .as("Menu was rebuilt getting category name")
+                        .isEqualTo(catName);
+            });
+        }
     }
 }
